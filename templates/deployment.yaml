@@ -8,7 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: {{ template "stdiscosrv.name" . }}
@@ -24,22 +24,29 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            {{- if .Values.stdiscosrv.debug.enabled }}
+            {{- if .Values.stdiscosrv.cert }}
+            - -cert={{ .Values.stdiscosrv.cert | quote }}
+            {{- end }}
+            {{- if .Values.stdiscosrv.dbDir }}
+            - -db-dir={{ .Values.stdiscosrv.dbDir | quote }}
+            {{- end }}
+            {{- if .Values.stdiscosrv.debug }}
             - -debug
             {{- end }}
-            {{- if .Values.stdiscosrv.discovery.http.enabled }}
+            {{- if .Values.stdiscosrv.http }}
             - -http
             {{- end }}
-            - -listen={{ .Values.stdiscosrv.discovery.listen.address }}:{{ .Values.stdiscosrv.discovery.listen.port }}
-            {{- if .Values.stdiscosrv.metrics.enabled }}
-            - -metrics-listen={{ .Values.stdiscosrv.metrics.listen.address }}:{{ .Values.stdiscosrv.metrics.listen.port }}
+            {{- if .Values.stdiscosrv.key }}
+            - -key={{ .Values.stdiscosrv.key | quote }}
             {{- end }}
-            {{- if .Values.stdiscosrv.replication.enabled }}
-            {{- if .Values.stdiscosrv.replication.peers }}
-            - -replicate-peers={{ .Values.stdiscosrv.replication.peers }}
+            - -listen={{ .Values.stdiscosrv.listen.address | quote }}:{{ .Values.stdiscosrv.listen.port | quote }}
+            {{- if .Values.stdiscosrv.metrics.enabled }}
+            - -metrics-listen={{ .Values.stdiscosrv.metrics.listen.address | quote }}:{{ .Values.stdiscosrv.metrics.listen.port | quote }}
+            {{- end }}
+            {{- if .Values.stdiscosrv.replicate }}
+            - -replicate={{ .Values.stdiscosrv.replicate }}
             {{- end }}
             - -replication-listen={{ .Values.stdiscosrv.replication.listen.address }}:{{ .Values.stdiscosrv.replication.listen.port }}
-            {{- end }}
             {{- if .Values.extraArgs }}
 {{ toYaml .Values.extraArgs | indent 12 }}
             {{- end }}
@@ -56,20 +63,9 @@ spec:
               containerPort: {{ .Values.stdiscosrv.metrics.listen.port }}
               protocol: TCP
             {{- end }}
-            {{- if .Values.stdiscosrv.replication.enabled }}
             - name: replication
               containerPort: {{ .Values.stdiscosrv.replication.listen.port }}
               protocol: TCP
-            {{- end }}
-          # TODO
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:

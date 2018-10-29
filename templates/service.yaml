@@ -15,7 +15,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.stdiscosrv.discovery.listen.port }}
+    - port: {{ .Values.stdiscosrv.listen.port }}
       targetPort: discovery
       protocol: TCP
       name: discovery
@@ -25,12 +25,10 @@ spec:
       protocol: TCP
       name: metrics
     {{- end }}
-    {{- if .Values.stdiscosrv.replication.enabled }}
     - port: {{ .Values.stdiscosrv.replication.listen.port }}
       targetPort: replication
       protocol: TCP
       name: replication
-    {{- end }}
   selector:
     app: {{ template "stdiscosrv.name" . }}
     release: {{ .Release.Name }}

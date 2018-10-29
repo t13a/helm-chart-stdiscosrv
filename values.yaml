@@ -1,25 +1,22 @@
 stdiscosrv:
-  debug:
-    enabled: false
-  discovery:
-    http:
-      enabled: false
-    listen:
-      address: ''
-      port: 8443
+  # cert: ./cert.pem
+  # dbDir: ./discovery.db
+  # debug: false
+  # http: false
+  # key: ./key.pem
+  listen:
+    address: ''
+    port: 8443
   metrics:
     enabled: false
     listen:
       address: ''
       port: 8080
+  # replicate: id@address,id@address
   replication:
-    enabled: false
-    # peers: id@address,id@address
     listen:
       address: ''
       port: 19200
-
-replicaCount: 1
 
 image:
   repository: t13a/stdiscosrv
@@ -95,4 +92,4 @@ tolerations: []
 
 affinity: {}
 
-# priorityClassName:
+priorityClassName:

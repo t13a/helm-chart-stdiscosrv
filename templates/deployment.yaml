@@ -24,29 +24,29 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-{{- if .Values.stdiscosrv.debug.enabled }}
+            {{- if .Values.stdiscosrv.debug.enabled }}
             - -debug
-{{- end }}
-{{- if .Values.stdiscosrv.discovery.http.enabled }}
+            {{- end }}
+            {{- if .Values.stdiscosrv.discovery.http.enabled }}
             - -http
-{{- end }}
+            {{- end }}
             - -listen={{ .Values.stdiscosrv.discovery.listen.address }}:{{ .Values.stdiscosrv.discovery.listen.port }}
-{{- if .Values.stdiscosrv.metrics.enabled }}
+            {{- if .Values.stdiscosrv.metrics.enabled }}
             - -metrics-listen={{ .Values.stdiscosrv.metrics.listen.address }}:{{ .Values.stdiscosrv.metrics.listen.port }}
-{{- end }}
-{{- if .Values.stdiscosrv.replication.enabled }}
-{{- if .Values.stdiscosrv.replication.peers }}
+            {{- end }}
+            {{- if .Values.stdiscosrv.replication.enabled }}
+            {{- if .Values.stdiscosrv.replication.peers }}
             - -replicate-peers={{ .Values.stdiscosrv.replication.peers }}
-{{- end }}
+            {{- end }}
             - -replication-listen={{ .Values.stdiscosrv.replication.listen.address }}:{{ .Values.stdiscosrv.replication.listen.port }}
-{{- end }}
-{{- if .Values.extraArgs }}
+            {{- end }}
+            {{- if .Values.extraArgs }}
 {{ toYaml .Values.extraArgs | indent 12 }}
-{{- end }}
+            {{- end }}
+          {{- if .Values.extraEnv }}
           env:
-{{- if .Values.extraArgs }}
 {{ toYaml .Values.extraEnv | indent 12 }}
-{{- end }}
+          {{- end }}
           ports:
             - name: discovery
               containerPort: {{ .Values.stdiscosrv.discovery.listen.port }}

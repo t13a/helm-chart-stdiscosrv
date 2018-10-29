@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "stdiscosrv.fullname" . }}
+  labels:
+    app: {{ template "stdiscosrv.name" . }}
+    chart: {{ template "stdiscosrv.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  {{- if .Values.stdiscosrv.metrics.enabled }}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: {{ .Values.stdiscosrv.metrics.listen.port | quote }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.discovery.listen.port }}
+      targetPort: discovery
+      protocol: TCP
+      name: discovery
+    {{- if .Values.stdiscosrv.metrics.enabled }}
+    - port: {{ .Values.metrics.listen.port }}
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    {{- end }}
+    {{- if .Values.stdiscosrv.replication.enabled }}
+    - port: {{ .Values.replication.listen.port }}
+      targetPort: replication
+      protocol: TCP
+      name: replication
+    {{- end }}
+  selector:
+    app: {{ template "stdiscosrv.name" . }}
+    release: {{ .Release.Name }}

@@ -15,7 +15,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.discovery.listen.port }}
+    - port: {{ .Values.stdiscosrv.discovery.listen.port }}
       targetPort: discovery
       protocol: TCP
       name: discovery

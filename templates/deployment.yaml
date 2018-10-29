@@ -56,7 +56,7 @@ spec:
           {{- end }}
           ports:
             - name: discovery
-              containerPort: {{ .Values.stdiscosrv.discovery.listen.port }}
+              containerPort: {{ .Values.stdiscosrv.listen.port }}
               protocol: TCP
             {{- if .Values.stdiscosrv.metrics.enabled }}
             - name: metrics

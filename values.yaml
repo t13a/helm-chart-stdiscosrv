@@ -33,6 +33,12 @@ image:
 # - name:
 #   value:
 
+# extraVolumeMounts:
+# - ...
+
+# extraVolumes:
+# - ...
+
 service:
   type: ClusterIP
 

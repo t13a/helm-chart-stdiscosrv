@@ -20,13 +20,13 @@ spec:
       protocol: TCP
       name: discovery
     {{- if .Values.stdiscosrv.metrics.enabled }}
-    - port: {{ .Values.metrics.listen.port }}
+    - port: {{ .Values.stdiscosrv.metrics.listen.port }}
       targetPort: metrics
       protocol: TCP
       name: metrics
     {{- end }}
     {{- if .Values.stdiscosrv.replication.enabled }}
-    - port: {{ .Values.replication.listen.port }}
+    - port: {{ .Values.stdiscosrv.replication.listen.port }}
       targetPort: replication
       protocol: TCP
       name: replication

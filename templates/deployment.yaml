@@ -25,10 +25,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             {{- if .Values.stdiscosrv.cert }}
-            - -cert={{ .Values.stdiscosrv.cert | quote }}
+            - -cert={{ .Values.stdiscosrv.cert }}
             {{- end }}
             {{- if .Values.stdiscosrv.dbDir }}
-            - -db-dir={{ .Values.stdiscosrv.dbDir | quote }}
+            - -db-dir={{ .Values.stdiscosrv.dbDir }}
             {{- end }}
             {{- if .Values.stdiscosrv.debug }}
             - -debug
@@ -37,11 +37,11 @@ spec:
             - -http
             {{- end }}
             {{- if .Values.stdiscosrv.key }}
-            - -key={{ .Values.stdiscosrv.key | quote }}
+            - -key={{ .Values.stdiscosrv.key }}
             {{- end }}
-            - -listen={{ .Values.stdiscosrv.listen.address | quote }}:{{ .Values.stdiscosrv.listen.port | quote }}
+            - -listen={{ .Values.stdiscosrv.listen.address }}:{{ .Values.stdiscosrv.listen.port }}
             {{- if .Values.stdiscosrv.metrics.enabled }}
-            - -metrics-listen={{ .Values.stdiscosrv.metrics.listen.address | quote }}:{{ .Values.stdiscosrv.metrics.listen.port | quote }}
+            - -metrics-listen={{ .Values.stdiscosrv.metrics.listen.address }}:{{ .Values.stdiscosrv.metrics.listen.port }}
             {{- end }}
             {{- if .Values.stdiscosrv.replicate }}
             - -replicate={{ .Values.stdiscosrv.replicate }}
